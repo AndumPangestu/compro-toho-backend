@@ -25,7 +25,7 @@ class TestimonialRequest extends FormRequest
             'message' => 'required|string',
             'sender_name' => 'required|string|max:255',
             'organization' => 'nullable|string|max:255',
-            'sender_category' => 'required|in:donor,partner,recipient',
+            // 'sender_category' => 'required|in:donor,partner,recipient',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ];
     }

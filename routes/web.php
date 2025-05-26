@@ -20,6 +20,8 @@ use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\ArticleCategoryController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\DonationCategoryController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\TeamController;
 
 Route::group(['middleware' => ['guest']], function () {
 
@@ -226,5 +228,31 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::post('/', [MonthlyReportController::class, 'store'])->name('monthly-reports.store');
         Route::put('/{report}', [MonthlyReportController::class, 'update'])->name('monthly-reports.update');
         Route::delete('/{report}', [MonthlyReportController::class, 'destroy'])->name('monthly-reports.destroy');
+    });
+
+    // teams
+    Route::prefix('teams')->group(function () {
+        Route::get('/', [TeamController::class, 'index'])->name('teams.index');
+        Route::get('/data', [TeamController::class, 'getTeams'])->name('teams.data');
+        Route::get('/create', [TeamController::class, 'create'])->name('teams.create');
+        Route::get('/{team}', [TeamController::class, 'show'])->name('teams.show');
+        Route::get('/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
+
+        Route::post('/', [TeamController::class, 'store'])->name('teams.store');
+        Route::put('/{team}', [TeamController::class, 'update'])->name('teams.update');
+        Route::delete('/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
+    });
+
+    // services
+    Route::prefix('services')->group(function () {
+        Route::get('/', [ServiceController::class, 'index'])->name('services.index');
+        Route::get('/data', [ServiceController::class, 'getServices'])->name('services.data');
+        Route::get('/create', [ServiceController::class, 'create'])->name('services.create');
+        Route::get('/{service}', [ServiceController::class, 'show'])->name('services.show');
+        Route::get('/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit');
+
+        Route::post('/', [ServiceController::class, 'store'])->name('services.store');
+        Route::put('/{service}', [ServiceController::class, 'update'])->name('services.update');
+        Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
     });
 });

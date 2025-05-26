@@ -54,9 +54,6 @@
                             <option value="admin"
                                 {{ isset($user) && $user->role == 'admin' ? 'selected' : (old('role') == 'admin' ? 'selected' : '') }}>
                                 Admin</option>
-                            <option value="user"
-                                {{ isset($user) && $user->role == 'user' ? 'selected' : (old('role') == 'user' ? 'selected' : '') }}>
-                                User</option>
                         </select>
                         @error('role')
                             <span class="text-danger"><strong>{{ $message }}</strong></span>

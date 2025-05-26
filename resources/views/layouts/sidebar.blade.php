@@ -61,8 +61,6 @@
             class="collapse {{ request()->routeIs('users.index') || request()->routeIs('admins.index') || (auth()->user()->role === 'superadmin' && request()->routeIs('superadmins.index')) ? 'show' : '' }}"
             data-parent="#accordionSidebar">
             <div class="collapse-inner">
-                <a class="collapse-item {{ request()->routeIs('users.index') ? 'active' : '' }}"
-                    href="{{ route('users.index') }}">User</a>
                 <a class="collapse-item {{ request()->routeIs('admins.index') ? 'active' : '' }}"
                     href="{{ route('admins.index') }}">Admin</a>
 
@@ -75,13 +73,26 @@
     </li>
 
 
-
-
     <!-- Partner -->
     <li class="nav-item {{ request()->routeIs('partners.index') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('partners.index') }}">
             <i class="fas fa-fw fa-handshake"></i>
             <span>Partner</span>
+        </a>
+    </li>
+
+    <!-- Team -->
+    <li class="nav-item {{ request()->routeIs('teams.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('teams.index') }}">
+            <i class="fas fa-fw fa-handshake"></i>
+            <span>Team</span>
+        </a>
+    </li>
+    <!-- Service -->
+    <li class="nav-item {{ request()->routeIs('services.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('services.index') }}">
+            <i class="fas fa-fw fa-handshake"></i>
+            <span>Service</span>
         </a>
     </li>
 

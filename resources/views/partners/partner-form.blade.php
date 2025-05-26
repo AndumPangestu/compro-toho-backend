@@ -10,7 +10,7 @@
         <div class="card-body">
             @if (isset($viewMode) && $viewMode)
                 <h3>Partner Details</h3>
-                <p><strong>Title:</strong> {{ $partner->title }}</p>
+                <p><strong>Name:</strong> {{ $partner->name }}</p>
                 <p><strong>Description:</strong> {{ $partner->description }}</p>
                 <p><strong>Related Article:</strong> {{ $partner->article->title ?? 'None' }}</p>
                 <p><strong>Image:</strong></p>
@@ -27,7 +27,7 @@
                         @method('PUT')
                     @endif
                     <div class="form-group">
-                        <label for="name">Partner Title</label>
+                        <label for="name">Partner Name</label>
                         <input type="text" class="form-control" name="name" id="name"
                             placeholder="Enter partner name..." value="{{ isset($partner) ? $partner->name : old('name') }}"
                             required>
@@ -36,7 +36,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="description">partner Description</label>
+                        <label for="description">Partner Description</label>
                         <textarea class="form-control" name="description" id="description" placeholder="Enter partner Description..."
                             rows="3">{{ isset($partner) ? $partner->description : old('description') }}</textarea>
                         @error('description')

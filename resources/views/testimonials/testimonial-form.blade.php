@@ -12,7 +12,7 @@
                 <p><strong>Message:</strong> {{ $testimonial->message }}</p>
                 <p><strong>Sender Name:</strong> {{ $testimonial->sender_name }}</p>
                 <p><strong>Organization:</strong> {{ $testimonial->organization ?? '-' }}</p>
-                <p><strong>Sender Category:</strong> {{ ucfirst($testimonial->sender_category) }}</p>
+                {{-- <p><strong>Sender Category:</strong> {{ ucfirst($testimonial->sender_category) }}</p> --}}
                 @if ($testimonial->getFirstMediaUrl('testimonials') !== null)
                     <img src="{{ $testimonial->getFirstMediaUrl('testimonials') }}" alt="Testimonial Image"
                         class="img-thumbnail" width="300">
@@ -59,7 +59,7 @@
                             </span>
                         @enderror
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="sender_category">Sender Category</label>
                         <select class="form-control @error('sender_category') is-invalid @enderror" name="sender_category"
                             id="sender_category" required>
@@ -78,7 +78,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="image">Upload Testimonial Image</label>
                         <input type="file" class="form-control-file" name="image" id="image" accept="image/*"
