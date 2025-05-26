@@ -187,7 +187,6 @@ class ArticleController extends Controller
                 ? $this->sendSuccess(201, new ArticleResource($article), "Article created successfully")
                 : redirect()->route('articles.index')->with('success', 'Article created successfully');
         } catch (\Exception $e) {
-
             return $request->wantsJson()
                 ? $this->sendError(500, null, "Internal server error")
                 : redirect()->back()->with('error', $e->getMessage());
@@ -226,8 +225,6 @@ class ArticleController extends Controller
     public function update(ArticleRequest $request, Article $article)
     {
         try {
-
-
             $article->update([
                 'title' => $request->title,
                 'slug' => Str::slug($request->title),

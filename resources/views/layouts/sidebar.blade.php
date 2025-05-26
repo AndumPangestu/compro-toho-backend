@@ -67,8 +67,8 @@
                     href="{{ route('admins.index') }}">Admin</a>
 
                 @if (auth()->user()->role === 'superadmin')
-                <a class="collapse-item {{ request()->routeIs('superadmins.index') ? 'active' : '' }}"
-                    href="{{ route('superadmins.index') }}">Super Admin</a>
+                    <a class="collapse-item {{ request()->routeIs('superadmins.index') ? 'active' : '' }}"
+                        href="{{ route('superadmins.index') }}">Super Admin</a>
                 @endif
             </div>
         </div>

@@ -24,10 +24,10 @@ class ArticleRequest extends FormRequest
         return [
             'title' => 'required|string|max:255|unique:articles,title' . ($this->route('article') ? ',' . $this->route('article')->id : ''),
             'content' => 'nullable|string',
-            'type' => 'required|in:news,kindness_story,release,infographics',
+            // 'type' => 'required|in:news,kindness_story,release,infographics',
             'description' => 'nullable|string|max:255',
             'category_id' => 'nullable|exists:article_categories,id',
-            'donation_id' => 'nullable|exists:donations,id',
+            // 'donation_id' => 'nullable|exists:donations,id',
             'put_on_highlight' => 'boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
             'tags' => 'nullable|string',

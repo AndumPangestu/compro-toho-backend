@@ -71,8 +71,6 @@
                                 @endif
                             </form>
 
-                            <hr>
-
                         </div>
                     </div>
                 </div>

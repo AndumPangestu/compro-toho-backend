@@ -16,7 +16,7 @@ class Article extends Model implements HasMedia
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['title', 'slug', 'content', 'type', 'category_id', 'put_on_highlight'];
+    protected $fillable = ['title', 'slug', 'content', 'type', 'category_id', 'put_on_highlight', 'description'];
 
     protected $casts = [
         'put_on_highlight' => 'boolean'
