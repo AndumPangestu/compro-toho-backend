@@ -20,7 +20,9 @@ use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\ArticleCategoryController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\DonationCategoryController;
+use App\Http\Controllers\OfficeLocationController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\TeamController;
 
 Route::group(['middleware' => ['guest']], function () {
@@ -254,5 +256,31 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::post('/', [ServiceController::class, 'store'])->name('services.store');
         Route::put('/{service}', [ServiceController::class, 'update'])->name('services.update');
         Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
+    });
+
+    // office-locations
+    Route::prefix('office-locations')->group(function () {
+        Route::get('/', [OfficeLocationController::class, 'index'])->name('office-locations.index');
+        Route::get('/data', [OfficeLocationController::class, 'getOfficeLocations'])->name('office-locations.data');
+        Route::get('/create', [OfficeLocationController::class, 'create'])->name('office-locations.create');
+        Route::get('/{id}', [OfficeLocationController::class, 'show'])->name('office-locations.show');
+        Route::get('/{id}/edit', [OfficeLocationController::class, 'edit'])->name('office-locations.edit');
+
+        Route::post('/', [OfficeLocationController::class, 'store'])->name('office-locations.store');
+        Route::put('/{id}', [OfficeLocationController::class, 'update'])->name('office-locations.update');
+        Route::delete('/{id}', [OfficeLocationController::class, 'destroy'])->name('office-locations.destroy');
+    });
+
+    // social media
+    Route::prefix('social-media')->group(function () {
+        Route::get('/', [SocialMediaController::class, 'index'])->name('social-media.index');
+        Route::get('/data', [SocialMediaController::class, 'getSocialMedia'])->name('social-media.data');
+        Route::get('/create', [SocialMediaController::class, 'create'])->name('social-media.create');
+        Route::get('/{id}', [SocialMediaController::class, 'show'])->name('social-media.show');
+        Route::get('/{id}/edit', [SocialMediaController::class, 'edit'])->name('social-media.edit');
+
+        Route::post('/', [SocialMediaController::class, 'store'])->name('social-media.store');
+        Route::put('/{id}', [SocialMediaController::class, 'update'])->name('social-media.update');
+        Route::delete('/{id}', [SocialMediaController::class, 'destroy'])->name('social-media.destroy');
     });
 });

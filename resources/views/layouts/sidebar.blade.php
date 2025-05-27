@@ -103,6 +103,21 @@
             <span>FAQ</span>
         </a>
     </li>
+    <!-- Office Location -->
+    <li class="nav-item {{ request()->routeIs('office-locations.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('office-locations.index') }}">
+            <i class="fas fa-fw fa-question-circle"></i>
+            <span>Office Location</span>
+        </a>
+    </li>
+
+    <!-- Social Media -->
+    <li class="nav-item {{ request()->routeIs('social-media.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('social-media.index') }}">
+            <i class="fas fa-fw fa-question-circle"></i>
+            <span>Social Media</span>
+        </a>
+    </li>
 
     <!-- Donations with Submenu -->
     {{-- <li class="nav-item">
