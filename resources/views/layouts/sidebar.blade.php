@@ -5,23 +5,23 @@
         <img src="{{ asset('img/logo-toho.png') }}" class="img-fluid" alt="">
     </a>
 
-    <hr class="sidebar-divider my-0">
+    {{-- <hr class="sidebar-divider my-0"> --}}
 
     <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('dashboard') }}">
+        <a class="nav-link py-2" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
     </li>
 
-    <hr class="sidebar-divider">
+    {{-- <hr class="sidebar-divider"> --}}
 
     <!-- Heading -->
-    <div class="sidebar-heading">Management</div>
+    {{-- <div class="sidebar-heading">Management</div> --}}
 
     <!-- Banner -->
     <li class="nav-item {{ request()->routeIs('banners.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('banners.index') }}">
+        <a class="nav-link py-2" href="{{ route('banners.index') }}">
             <i class="fas fa-fw fa-image"></i>
             <span>Banner</span>
         </a>
@@ -29,7 +29,7 @@
 
     <!-- Articles with Submenu -->
     <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->routeIs('articles.index') || request()->routeIs('article-categories.index') ? '' : 'collapsed' }}"
+        <a class="nav-link py-2 collapsed {{ request()->routeIs('articles.index') || request()->routeIs('article-categories.index') ? '' : 'collapsed' }}"
             href="#" data-toggle="collapse" data-target="#collapseArticles"
             aria-expanded="{{ request()->routeIs('articles.index') || request()->routeIs('article-categories.index') ? 'true' : 'false' }}"
             aria-controls="collapseArticles">
@@ -50,17 +50,35 @@
 
     <!-- User Management with Submenu -->
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('admins.index') || (auth()->user()->role === 'superadmin' && request()->routeIs('superadmins.index')) ? '' : 'collapsed' }}"
+        <a class="nav-link py-2 {{ request()->routeIs('users.index') || request()->routeIs('admins.index') || (auth()->user()->role === 'superadmin' && request()->routeIs('superadmins.index')) ? '' : 'collapsed' }}"
             href="#" data-toggle="collapse" data-target="#collapseUsers"
             aria-expanded="{{ request()->routeIs('users.index') || request()->routeIs('admins.index') || (auth()->user()->role === 'superadmin' && request()->routeIs('superadmins.index')) ? 'true' : 'false' }}"
             aria-controls="collapseUsers">
             <i class="fas fa-fw fa-users"></i>
-            <span>User Management</span>
+            <span>Master Data</span>
         </a>
         <div id="collapseUsers"
             class="collapse {{ request()->routeIs('users.index') || request()->routeIs('admins.index') || (auth()->user()->role === 'superadmin' && request()->routeIs('superadmins.index')) ? 'show' : '' }}"
             data-parent="#accordionSidebar">
             <div class="collapse-inner">
+                <a class="collapse-item {{ request()->routeIs('partners.index') ? 'active' : '' }}"
+                    href="{{ route('partners.index') }}">Partner</a>
+
+                <a class="collapse-item {{ request()->routeIs('teams.index') ? 'active' : '' }}"
+                    href="{{ route('teams.index') }}">Team</a>
+
+                <a class="collapse-item {{ request()->routeIs('services.index') ? 'active' : '' }}"
+                    href="{{ route('services.index') }}">Service</a>
+
+                <a class="collapse-item {{ request()->routeIs('faqs.index') ? 'active' : '' }}"
+                    href="{{ route('faqs.index') }}">FAQ</a>
+
+                <a class="collapse-item {{ request()->routeIs('office-locations.index') ? 'active' : '' }}"
+                    href="{{ route('office-locations.index') }}">Office Location</a>
+
+                <a class="collapse-item {{ request()->routeIs('social-media.index') ? 'active' : '' }}"
+                    href="{{ route('social-media.index') }}">Social Media</a>
+
                 <a class="collapse-item {{ request()->routeIs('admins.index') ? 'active' : '' }}"
                     href="{{ route('admins.index') }}">Admin</a>
 
@@ -73,76 +91,11 @@
     </li>
 
 
-    <!-- Partner -->
-    <li class="nav-item {{ request()->routeIs('partners.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('partners.index') }}">
-            <i class="fas fa-fw fa-handshake"></i>
-            <span>Partner</span>
-        </a>
-    </li>
 
-    <!-- Team -->
-    <li class="nav-item {{ request()->routeIs('teams.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('teams.index') }}">
-            <i class="fas fa-fw fa-handshake"></i>
-            <span>Team</span>
-        </a>
-    </li>
-    <!-- Service -->
-    <li class="nav-item {{ request()->routeIs('services.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('services.index') }}">
-            <i class="fas fa-fw fa-handshake"></i>
-            <span>Service</span>
-        </a>
-    </li>
-
-    <!-- FAQ -->
-    <li class="nav-item {{ request()->routeIs('faqs.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('faqs.index') }}">
-            <i class="fas fa-fw fa-question-circle"></i>
-            <span>FAQ</span>
-        </a>
-    </li>
-    <!-- Office Location -->
-    <li class="nav-item {{ request()->routeIs('office-locations.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('office-locations.index') }}">
-            <i class="fas fa-fw fa-question-circle"></i>
-            <span>Office Location</span>
-        </a>
-    </li>
-
-    <!-- Social Media -->
-    <li class="nav-item {{ request()->routeIs('social-media.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('social-media.index') }}">
-            <i class="fas fa-fw fa-question-circle"></i>
-            <span>Social Media</span>
-        </a>
-    </li>
-
-    <!-- Donations with Submenu -->
-    {{-- <li class="nav-item">
-        <a class="nav-link collapsed {{ request()->routeIs('donations.index') || request()->routeIs('donation-categories.index') ? '' : 'collapsed' }}"
-            href="#" data-toggle="collapse" data-target="#collapseDonations"
-            aria-expanded="{{ request()->routeIs('donations.index') || request()->routeIs('donation-categories.index') ? 'true' : 'false' }}"
-            aria-controls="collapseDonations">
-            <i class="fas fa-fw fa-donate"></i>
-            <span>Donations</span>
-        </a>
-        <div id="collapseDonations"
-            class="collapse {{ request()->routeIs('donations.index') || request()->routeIs('donation-categories.index') ? 'show' : '' }}"
-            data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-                <a class="collapse-item {{ request()->routeIs('donations.index') ? 'active' : '' }}"
-                    href="{{ route('donations.index') }}">Donation List</a>
-                <a class="collapse-item {{ request()->routeIs('donation-categories.index') ? 'active' : '' }}"
-                    href="{{ route('donation-categories.index') }}">Donation Categories</a>
-            </div>
-        </div>
-    </li> --}}
 
     <!-- Testimonials -->
     <li class="nav-item {{ request()->routeIs('testimonials.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('testimonials.index') }}">
+        <a class="nav-link py-2 " href="{{ route('testimonials.index') }}">
             <i class="fas fa-fw fa-comment-alt"></i>
             <span>Testimonials</span>
         </a>
@@ -151,7 +104,7 @@
     {{--
     <!-- Transactions -->
     <li class="nav-item {{ request()->routeIs('transactions.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('transactions.index') }}">
+        <a class="nav-link py-2  href="{{ route('transactions.index') }}">
             <i class="fas fa-fw fa-exchange-alt"></i>
             <span>Transactions</span>
         </a>
@@ -160,7 +113,7 @@
 
     <!-- Reports with Submenu -->
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('annual-reports.index') || request()->routeIs('financial-reports.index') || request()->routeIs('monthly-reports.index') || request()->routeIs('reports.index') ? '' : 'collapsed' }}"
+        <a class="nav-link py-2 {{ request()->routeIs('annual-reports.index') || request()->routeIs('financial-reports.index') || request()->routeIs('monthly-reports.index') || request()->routeIs('reports.index') ? '' : 'collapsed' }}"
             href="#" data-toggle="collapse" data-target="#collapseReports"
             aria-expanded="{{ request()->routeIs('annual-reports.index') || request()->routeIs('financial-reports.index') || request()->routeIs('monthly-reports.index') || request()->routeIs('reports.index') ? 'true' : 'false' }}"
             aria-controls="collapseReports">
@@ -185,7 +138,7 @@
 
     <!-- Broadcasts -->
     <li class="nav-item {{ request()->routeIs('broadcasts.index') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('broadcasts.index') }}">
+        <a class="nav-link py-2  href="{{ route('broadcasts.index') }}">
             <i class="fas fa-fw fa-broadcast-tower"></i>
             <span>Broadcasts</span>
         </a>
