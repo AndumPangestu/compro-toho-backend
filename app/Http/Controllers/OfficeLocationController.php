@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OfficeLocationRequest;
+use App\Http\Resources\OfficeLocationResource;
 use App\Models\OfficeLocation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class OfficeLocationController extends Controller
         if ($request->wantsJson()) {
 
             $officeLocations = OfficeLocation::latest()->get();
-            return $this->sendSuccess(200, OfficeLocation::collection($officeLocations), "Office Location fetched successfully");
+            return $this->sendSuccess(200, OfficeLocationResource::collection($officeLocations), "Office Location fetched successfully");
         }
 
         return view('office-locations.index');
@@ -30,10 +31,9 @@ class OfficeLocationController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('icon', function ($row) {
-                    if ($row->icon()) {
-                        return '<img src="' . $row->icon() . '" alt="Image" class="img-fluid" style="width: 100px; height: 100px;">';
-                    }
+                ->addColumn('image', function ($row) {
+                    $imageUrl = $row->getFirstMediaUrl('office_locations') ?: asset('default-image.jpg');
+                    return '<img src="' . $imageUrl . '" width="50" height="50" class="rounded">';
                 })
                 ->editColumn('created_at', function ($row) {
                     return Carbon::parse($row->created_at)->format('d M Y H:i');
@@ -65,12 +65,8 @@ class OfficeLocationController extends Controller
         try {
 
             $officeLocation = OfficeLocation::create($request->validated());
-            if ($request->hasFile('icon')) {
-                $icon = $request->file('icon');
-                $iconName = time() . '.' . $icon->getClientOriginalExtension();
-                $icon->move(public_path('uploads/office-locations'), $iconName);
-                $officeLocation->icon = $iconName;
-                $officeLocation->save();
+            if ($request->hasFile('image')) {
+                $officeLocation->addMedia($request->file('image'))->toMediaCollection('office_locations');
             }
             return $request->wantsJson()
                 ? $this->sendSuccess(201, $officeLocation, "Office Location created successfully")
@@ -82,15 +78,15 @@ class OfficeLocationController extends Controller
         }
     }
 
-    // public function show(Request $request, $id)
-    // {
-    //     $officeLocation = OfficeLocation::findOrFail($id);
-    //     if ($request->wantsJson()) {
-    //         return $this->sendSuccess(200, new OfficeLocation($id), "Office Location fetched successfully");
-    //     }
-    //     $viewMode = true;
-    //     return view('office-locations.form', compact('service', 'viewMode'));
-    // }
+    public function show(Request $request, $id)
+    {
+        $officeLocation = OfficeLocation::findOrFail($id);
+        if ($request->wantsJson()) {
+            return $this->sendSuccess(200, new OfficeLocation($id), "Office Location fetched successfully");
+        }
+        $viewMode = true;
+        return view('office-locations.form', compact('service', 'viewMode'));
+    }
 
     public function edit($id)
     {
@@ -103,17 +99,10 @@ class OfficeLocationController extends Controller
         try {
             $officeLocation = OfficeLocation::findOrFail($id);
             $officeLocation->update($request->validated());
-            if ($request->hasFile('icon')) {
-                if ($officeLocation->icon) {
-                    unlink(public_path('uploads/office-locations/' . $officeLocation->icon));
-                }
-                $icon = $request->file('icon');
-                $iconName = time() . '.' . $icon->getClientOriginalExtension();
-                $icon->move(public_path('uploads/office-locations'), $iconName);
-                $officeLocation->icon = $iconName;
-                $officeLocation->save();
+            if ($request->hasFile('image')) {
+                $officeLocation->clearMediaCollection('office_locations');
+                $officeLocation->addMedia($request->file('image'))->toMediaCollection('office_locations');
             }
-
             return $request->wantsJson()
                 ? $this->sendSuccess(200, $officeLocation, "Office Location updated successfully")
                 : redirect()->route('office-locations.index')->with('success', 'Office Location updated successfully');
@@ -127,16 +116,14 @@ class OfficeLocationController extends Controller
     {
         try {
             $officeLocation = OfficeLocation::findOrFail($id);
-            // if ($officeLocation->icon) {
-            //     unlink(public_path('uploads/office-locations/' . $officeLocation->icon));
-            // }
+            $officeLocation->clearMediaCollection('office_locations');
             $officeLocation->delete();
-            // dd($request->wantsJson());
+
             return $request->wantsJson()
                 ? $this->sendSuccess(200, null, "Office Location deleted successfully")
                 : redirect()->route('office-locations.index')->with('success', 'Office Location deleted successfully');
         } catch (\Exception $e) {
-            // dd($e->getMessage());
+
 
             request()->wantsJson()
                 ? $this->sendError(500, null, "Internal server error") : redirect()->back()->with('error', $e->getMessage());

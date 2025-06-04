@@ -14,6 +14,12 @@ class TeamResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'role' => $this->role,
+            'position_number' => $this->position_number,
+            'image_url' => $this->getFirstMediaUrl('teams'),
+        ];
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Service extends Model implements HasMedia
+class MetaData extends Model
 {
     use InteractsWithMedia;
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['type', 'data'];
 }

@@ -165,6 +165,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::get('/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     });
 
+
+
     Route::prefix('users')->group(function () {
         Route::get('/role/user', [UserController::class, 'index'])->name('users.index');
         Route::get('/role/admin', [UserController::class, 'index'])->name('admins.index');

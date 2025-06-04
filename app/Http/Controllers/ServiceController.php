@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ServiceRequest;
+use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class ServiceController extends Controller
         if ($request->wantsJson()) {
 
             $services = Service::latest()->get();
-            return $this->sendSuccess(200, Service::collection($services), "services fetched successfully");
+            return $this->sendSuccess(200, ServiceResource::collection($services), "services fetched successfully");
         }
 
         return view('services.index');
@@ -30,10 +31,9 @@ class ServiceController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('image', function ($row) {
-                    if ($row->image()) {
-                        return '<img src="' . $row->image() . '" alt="Image" class="img-fluid" style="width: 100px; height: 100px;">';
-                    }
+                ->addColumn('image', function ($row) {
+                    $imageUrl = $row->getFirstMediaUrl('services') ?: asset('default-image.jpg');
+                    return '<img src="' . $imageUrl . '" width="50" height="50" class="rounded">';
                 })
                 ->editColumn('created_at', function ($row) {
                     return Carbon::parse($row->created_at)->format('d M Y H:i');
@@ -64,14 +64,16 @@ class ServiceController extends Controller
     {
         try {
 
+            $request->validate([
+                'image' => 'required',
+            ]);
+
             $service = Service::create($request->validated());
+
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/services'), $imageName);
-                $service->image = $imageName;
-                $service->save();
+                $service->addMedia($request->file('image'))->toMediaCollection('services');
             }
+
             return $request->wantsJson()
                 ? $this->sendSuccess(201, $service, "Service created successfully")
                 : redirect()->route('services.index')->with('success', 'Service created successfully');
@@ -85,7 +87,7 @@ class ServiceController extends Controller
     public function show(Request $request, Service $service)
     {
         if ($request->wantsJson()) {
-            return $this->sendSuccess(200, new Service($service), "Service fetched successfully");
+            return $this->sendSuccess(200, new ServiceResource($service), "Service fetched successfully");
         }
 
         $viewMode = true;
@@ -102,15 +104,10 @@ class ServiceController extends Controller
         try {
 
             $service->update($request->validated());
+
             if ($request->hasFile('image')) {
-                if ($service->image) {
-                    unlink(public_path('uploads/services/' . $service->image));
-                }
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/services'), $imageName);
-                $service->image = $imageName;
-                $service->save();
+                $service->clearMediaCollection('services');
+                $service->addMedia($request->file('image'))->toMediaCollection('services');
             }
 
             return $request->wantsJson()
@@ -126,7 +123,7 @@ class ServiceController extends Controller
     {
 
         try {
-
+            $service->clearMediaCollection('services');
             $service->delete();
 
             return $request->wantsJson()

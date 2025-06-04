@@ -24,7 +24,6 @@ class OfficeLocationRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:1000',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

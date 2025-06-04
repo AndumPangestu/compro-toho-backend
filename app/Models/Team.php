@@ -2,17 +2,12 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Team extends Model
+class Team extends Model implements HasMedia
 {
-    protected $fillable = ['name', 'role', 'position_number', 'image'];
-
-    public function image()
-    {
-        if ($this->image) {
-            return asset('uploads/teams/' . $this->image);
-        }
-        return asset('img/user-default.png');
-    }
+    use  InteractsWithMedia;
+    protected $fillable = ['name', 'role', 'position_number'];
 }

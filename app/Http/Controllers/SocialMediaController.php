@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SocialMediaRequest;
+use App\Http\Resources\SocialMediaResource;
 use App\Models\SocialMedia;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,9 +15,8 @@ class SocialMediaController extends Controller
     {
 
         if ($request->wantsJson()) {
-
             $socialMedias = SocialMedia::latest()->get();
-            return $this->sendSuccess(200, SocialMedia::collection($socialMedias), "Social Media fetched successfully");
+            return $this->sendSuccess(200, SocialMediaResource::collection($socialMedias), "Social Media fetched successfully");
         }
 
         return view('social-media.index');
@@ -30,10 +30,9 @@ class SocialMediaController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('icon', function ($row) {
-                    if ($row->icon()) {
-                        return '<img src="' . $row->icon() . '" alt="Image" class="img-fluid" style="width: 100px; height: 100px;">';
-                    }
+                ->addColumn('image', function ($row) {
+                    $imageUrl = $row->getFirstMediaUrl('social_media') ?: asset('default-image.jpg');
+                    return '<img src="' . $imageUrl . '" width="50" height="50" class="rounded">';
                 })
                 ->editColumn('created_at', function ($row) {
                     return Carbon::parse($row->created_at)->format('d M Y H:i');
@@ -63,14 +62,17 @@ class SocialMediaController extends Controller
     public function store(SocialMediaRequest $request)
     {
         try {
+
+            $request->validate([
+                'image' => 'required',
+            ]);
+
             $socialMedia = SocialMedia::create($request->validated());
-            if ($request->hasFile('icon')) {
-                $icon = $request->file('icon');
-                $iconName = time() . '.' . $icon->getClientOriginalExtension();
-                $icon->move(public_path('uploads/social-media'), $iconName);
-                $socialMedia->icon = $iconName;
-                $socialMedia->save();
+
+            if ($request->hasFile('image')) {
+                $socialMedia->addMedia($request->file('image'))->toMediaCollection('social_media');
             }
+
             return $request->wantsJson()
                 ? $this->sendSuccess(201, $socialMedia, "Social Media created successfully")
                 : redirect()->route('social-media.index')->with('success', 'Social Media created successfully');
@@ -81,15 +83,15 @@ class SocialMediaController extends Controller
         }
     }
 
-    // public function show(Request $request, $id)
-    // {
-    //     $socialMedia = SocialMedia::findOrFail($id);
-    //     if ($request->wantsJson()) {
-    //         return $this->sendSuccess(200, new socialMedia($id), "Social Media fetched successfully");
-    //     }
-    //     $viewMode = true;
-    //     return view('social-media.form', compact('service', 'viewMode'));
-    // }
+    public function show(Request $request, $id)
+    {
+        $socialMedia = SocialMedia::findOrFail($id);
+        if ($request->wantsJson()) {
+            return $this->sendSuccess(200, new socialMedia($id), "Social Media fetched successfully");
+        }
+        $viewMode = true;
+        return view('social-media.form', compact('service', 'viewMode'));
+    }
 
     public function edit($id)
     {
@@ -102,17 +104,11 @@ class SocialMediaController extends Controller
         try {
             $socialMedia = SocialMedia::findOrFail($id);
             $socialMedia->update($request->validated());
-            if ($request->hasFile('icon')) {
-                if ($socialMedia->icon) {
-                    unlink(public_path('uploads/social-media/' . $socialMedia->icon));
-                }
-                $icon = $request->file('icon');
-                $iconName = time() . '.' . $icon->getClientOriginalExtension();
-                $icon->move(public_path('uploads/social-media'), $iconName);
-                $socialMedia->icon = $iconName;
-                $socialMedia->save();
-            }
 
+            if ($request->hasFile('image')) {
+                $socialMedia->clearMediaCollection('social_media');
+                $socialMedia->addMedia($request->file('image'))->toMediaCollection('social_media');
+            }
             return $request->wantsJson()
                 ? $this->sendSuccess(200, $socialMedia, "Social Media updated successfully")
                 : redirect()->route('social-media.index')->with('success', 'Social Media updated successfully');
@@ -126,16 +122,14 @@ class SocialMediaController extends Controller
     {
         try {
             $socialMedia = SocialMedia::findOrFail($id);
-            // if ($socialMedia->icon) {
-            //     unlink(public_path('uploads/social-media/' . $socialMedia->icon));
-            // }
+
+            $socialMedia->clearMediaCollection('social_media');
             $socialMedia->delete();
-            // dd($request->wantsJson());
+
             return $request->wantsJson()
                 ? $this->sendSuccess(200, null, "Social Media deleted successfully")
                 : redirect()->route('social-media.index')->with('success', 'Social Media deleted successfully');
         } catch (\Exception $e) {
-            // dd($e->getMessage());
 
             request()->wantsJson()
                 ? $this->sendError(500, null, "Internal server error") : redirect()->back()->with('error', $e->getMessage());

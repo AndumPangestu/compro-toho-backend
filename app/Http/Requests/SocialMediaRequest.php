@@ -24,7 +24,6 @@ class SocialMediaRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'url' => 'required|url|max:2048',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

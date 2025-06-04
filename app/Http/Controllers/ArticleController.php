@@ -31,19 +31,10 @@ class ArticleController extends Controller
         // Filter berdasarkan request
         $query->when($request->filled('put_on_highlight'), fn($q) => $q->where('put_on_highlight', $request->put_on_highlight))
             ->when($request->filled('category_id'), fn($q) => $q->where('category_id', $request->category_id))
-            ->when($request->filled('donation_id'), fn($q) => $q->where('donation_id', $request->donation_id))
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%');
             });
-
-
-
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        } else {
-            $query->whereNot('type', 'infographics');
-        }
 
 
 

@@ -2,23 +2,13 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class OfficeLocation extends Model
+class OfficeLocation extends Model  implements HasMedia
 {
+    use InteractsWithMedia;
     protected $table = 'office_locations';
-    protected $fillable = ['name', 'address', 'icon'];
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    public function icon()
-    {
-        if ($this->icon) {
-            return asset('uploads/office-locations/' . $this->icon);
-        } else {
-            return asset('images/default-office-icon.png');
-        }
-    }
+    protected $fillable = ['name', 'address'];
 }

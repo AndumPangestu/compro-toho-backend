@@ -31,10 +31,9 @@ class TeamController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('image', function ($row) {
-                    if ($row->image()) {
-                        return '<img src="' . $row->image() . '" alt="Image" class="img-fluid" style="width: 100px; height: 100px;">';
-                    }
+                ->addColumn('image', function ($row) {
+                    $imageUrl = $row->getFirstMediaUrl('teams') ?: asset('default-image.jpg');
+                    return '<img src="' . $imageUrl . '" width="50" height="50" class="rounded">';
                 })
                 ->editColumn('created_at', function ($row) {
                     return Carbon::parse($row->created_at)->format('d M Y H:i');
@@ -66,13 +65,11 @@ class TeamController extends Controller
         try {
 
             $team = Team::create($request->validated());
+
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/teams'), $imageName);
-                $team->image = $imageName;
-                $team->save();
+                $team->addMedia($request->file('image'))->toMediaCollection('teams');
             }
+
             return $request->wantsJson()
                 ? $this->sendSuccess(201, $team, "Team created successfully")
                 : redirect()->route('teams.index')->with('success', 'Category created successfully');
@@ -103,15 +100,10 @@ class TeamController extends Controller
         try {
 
             $team->update($request->validated());
+
             if ($request->hasFile('image')) {
-                if ($team->image) {
-                    unlink(public_path('uploads/teams/' . $team->image));
-                }
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/teams'), $imageName);
-                $team->image = $imageName;
-                $team->save();
+                $team->clearMediaCollection('teams');
+                $team->addMedia($request->file('image'))->toMediaCollection('teams');
             }
 
             return $request->wantsJson()
@@ -127,7 +119,7 @@ class TeamController extends Controller
     {
 
         try {
-
+            $team->clearMediaCollection('teams');
             $team->delete();
 
             return $request->wantsJson()

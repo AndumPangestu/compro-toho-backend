@@ -2,23 +2,13 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class SocialMedia extends Model
+class SocialMedia extends Model  implements HasMedia
 {
+    use InteractsWithMedia;
     protected $table = 'social_media';
-    protected $fillable = ['name', 'url', 'icon'];
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    public function icon()
-    {
-        if ($this->icon) {
-            return asset('uploads/social-media/' . $this->icon);
-        } else {
-            return asset('images/default-office-icon.png');
-        }
-    }
+    protected $fillable = ['name', 'url'];
 }

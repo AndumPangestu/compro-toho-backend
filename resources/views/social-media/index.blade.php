@@ -3,38 +3,39 @@
 @section('title', 'Social Media Management')
 
 @section('content')
-    <h1>Social Media</h1>
-    <hr>
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-end mb-3"> <a href="{{ route('social-media.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Tambah Data </a>
-            </div>
-            <div class="table-responsive">
-                <table id="teamTable" class="table table-hover w-100 p-3">
-                    <thead class="bg-primary text-white">
-                        <tr>
-                            <th>ID</th>
-                            <th>Icon</th>
-                            <th>Name</th>
-                            <th>URL</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+<h1>Social Media</h1>
+<hr>
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-end mb-3"> <a href="{{ route('social-media.create') }}"
+                class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tambah Data </a>
+        </div>
+        <div class="table-responsive">
+            <table id="teamTable" class="table table-hover w-100 p-3">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>URL</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
+</div>
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             $('#teamTable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -50,8 +51,8 @@
                         searchable: false
                     },
                     {
-                        data: 'icon',
-                        name: 'icon',
+                        data: 'image',
+                        name: 'image',
                         orderable: false,
                         searchable: false
                     },
@@ -83,9 +84,9 @@
                 ]
             });
         });
-    </script>
-    <script>
-        $(document).on('click', '.btn-delete', function(e) {
+</script>
+<script>
+    $(document).on('click', '.btn-delete', function(e) {
             e.preventDefault(); // Mencegah aksi default tombol
 
             var bannerId = $(this).data('id'); // Ambil ID dari data-id
@@ -106,5 +107,5 @@
                 }
             });
         });
-    </script>
+</script>
 @endpush
