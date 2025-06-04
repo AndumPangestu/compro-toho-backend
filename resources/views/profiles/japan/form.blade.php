@@ -105,12 +105,14 @@
             <div class="form-group">
                 <label>Domestic Group</label>
                 <div id="domestic-group-container">
-                    @php $domesticGroups = old('domestic_group', $profileData->domestic_group ?? [['name' => '']]);
+                    @php
+                    $domesticGroups = old('domestic_group') ?? ($profileData->domestic_group ?? [['name' => '']]);
                     @endphp
                     @foreach ($domesticGroups as $index => $group)
                     <div class="input-group mb-2">
                         <input type="text" name="domestic_group[{{ $index }}][name]" class="form-control"
-                            placeholder="Group Name" value="{{ $group->name }}" required>
+                            placeholder="Group Name" value="{{ old(" domestic_group.$index.name") ?? ($group['name'] ??
+                            $group->name ?? '') }}" required>
                         <div class="input-group-append">
                             @if ($loop->first)
                             <button class="btn btn-success" type="button" onclick="addDomesticGroup()">+</button>
@@ -128,12 +130,14 @@
             <div class="form-group">
                 <label>Overseas Group</label>
                 <div id="overseas-group-container">
-                    @php $overseasGroups = old('overseas_group', $profileData->overseas_group ?? [['name' => '']]);
+                    @php
+                    $overseasGroups = old('overseas_group') ?? ($profileData->overseas_group ?? [['name' => '']]);
                     @endphp
                     @foreach ($overseasGroups as $index => $group)
                     <div class="input-group mb-2">
                         <input type="text" name="overseas_group[{{ $index }}][name]" class="form-control"
-                            placeholder="Group Name" value="{{ $group->name }}" required>
+                            placeholder="Group Name" value="{{ old(" overseas_group.$index.name") ?? ($group['name'] ??
+                            $group->name ?? '') }}" required>
                         <div class="input-group-append">
                             @if ($loop->first)
                             <button class="btn btn-success" type="button" onclick="addOverseasGroup()">+</button>
@@ -156,18 +160,16 @@
                 @error('image.*') <span class="text-danger"><strong>{{ $message }}</strong></span> @enderror
             </div>
 
-            {{-- Preview existing images --}}
+            {{-- Image Preview --}}
             <div id="image-preview-container" class="d-flex flex-wrap gap-2 mt-3">
-                @if ($profile->getMedia('japan_profiles')->isNotEmpty())
+                @if (isset($profile) && $profile->getMedia('japan_profiles')->isNotEmpty())
                 @foreach ($profile->getMedia('japan_profiles') as $media)
-                <div class="image-preview">
-                    <img class="img-thumbnail" src="{{ $media->getFullUrl() }}" alt="Image">
+                <div class="image-preview position-relative">
+                    <img class="img-thumbnail" src="{{ $media->getFullUrl() }}" alt="Image" style="max-width: 150px;">
                 </div>
                 @endforeach
                 @endif
-
             </div>
-
             <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
         </form>
     </div>
