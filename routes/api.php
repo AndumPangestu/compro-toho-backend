@@ -30,6 +30,7 @@ use App\Http\Controllers\EmailSubscriberController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\DonationCategoryController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\MetaDataController;
 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'userLogin']);
@@ -120,6 +121,8 @@ Route::prefix('donations')->group(function () {
     Route::get('/{donation}', [DonationController::class, 'show']);
     Route::get('/{donation}/transactions', [DonationController::class, 'transactions']);
 });
+
+Route::get('/profiles/{type}', [MetaDataController::class, 'getProfile']);
 
 Route::post('/transactions/callback', [TransactionController::class, 'callback']);
 

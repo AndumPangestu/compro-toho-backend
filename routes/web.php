@@ -20,6 +20,7 @@ use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\ArticleCategoryController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\DonationCategoryController;
+use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\OfficeLocationController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialMediaController;
@@ -180,6 +181,15 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::put('/{user}', [UserController::class, 'updateByAdmin'])->name('users.update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+
+
+    Route::prefix('profiles')->group(function () {
+        Route::get('/indonesia', [MetaDataController::class, 'index'])->name('profiles.indonesia.index');
+        Route::get('/japan', [MetaDataController::class, 'index'])->name('profiles.japan.index');
+
+        Route::post('/indonesia', [MetaDataController::class, 'storeIndonesiaProfile'])->name('profiles.indonesia.store');
+        Route::post('/japan', [MetaDataController::class, 'storeJapanProfile'])->name('profiles.japan.store');
     });
 
 
