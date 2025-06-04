@@ -109,10 +109,15 @@
                     $domesticGroups = old('domestic_group') ?? ($profileData->domestic_group ?? [['name' => '']]);
                     @endphp
                     @foreach ($domesticGroups as $index => $group)
+                    @php
+                    $nameValue = old("domestic_group.$index.name");
+                    if (is_null($nameValue)) {
+                    $nameValue = is_array($group) ? ($group['name'] ?? '') : ($group->name ?? '');
+                    }
+                    @endphp
                     <div class="input-group mb-2">
                         <input type="text" name="domestic_group[{{ $index }}][name]" class="form-control"
-                            placeholder="Group Name" value="{{ old(" domestic_group.$index.name") ?? ($group['name'] ??
-                            $group->name ?? '') }}" required>
+                            placeholder="Group Name" value="{{ $nameValue }}" required>
                         <div class="input-group-append">
                             @if ($loop->first)
                             <button class="btn btn-success" type="button" onclick="addDomesticGroup()">+</button>
@@ -124,6 +129,7 @@
                     </div>
                     @endforeach
                 </div>
+
             </div>
 
             {{-- Overseas Group --}}
@@ -133,11 +139,17 @@
                     @php
                     $overseasGroups = old('overseas_group') ?? ($profileData->overseas_group ?? [['name' => '']]);
                     @endphp
+
                     @foreach ($overseasGroups as $index => $group)
+                    @php
+                    $nameValue = old("overseas_group.$index.name");
+                    if (is_null($nameValue)) {
+                    $nameValue = is_array($group) ? ($group['name'] ?? '') : ($group->name ?? '');
+                    }
+                    @endphp
                     <div class="input-group mb-2">
                         <input type="text" name="overseas_group[{{ $index }}][name]" class="form-control"
-                            placeholder="Group Name" value="{{ old(" overseas_group.$index.name") ?? ($group['name'] ??
-                            $group->name ?? '') }}" required>
+                            placeholder="Group Name" value="{{ $nameValue }}" required>
                         <div class="input-group-append">
                             @if ($loop->first)
                             <button class="btn btn-success" type="button" onclick="addOverseasGroup()">+</button>
@@ -148,8 +160,10 @@
                         </div>
                     </div>
                     @endforeach
+
                 </div>
             </div>
+
 
             {{-- Upload Image --}}
             <div class="form-group">
