@@ -16,7 +16,7 @@ class OfficeLocationController extends Controller
 
         if ($request->wantsJson()) {
 
-            $officeLocations = OfficeLocation::latest()->get();
+            $officeLocations = OfficeLocation::orderBy('position', 'ASC')->get();
             return $this->sendSuccess(200, OfficeLocationResource::collection($officeLocations), "Office Location fetched successfully");
         }
 

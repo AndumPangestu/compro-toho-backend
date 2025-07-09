@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         User::create([
             'id' => Str::uuid(),
             'name' => 'SuperAdmin',
-            'email' => 'superadmin@example',
-            'password' => bcrypt('123123'),
+            'email' => 'superadmin@gmail.com',
+            'password' => bcrypt('password'),
             'role' => 'superadmin',
 
         ]);
@@ -27,26 +27,11 @@ class UserSeeder extends Seeder
         User::create([
             'id' => Str::uuid(),
             'name' => 'Admin',
-            'email' => 'admin@example',
-            'password' => bcrypt('123123'),
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('password'),
             'role' => 'admin',
             'email_verified_at' => now(),
 
-        ]);
-
-        User::create([
-            'id' => Str::uuid(),
-            'name' => 'User',
-            'email' => 'user@example',
-            'password' => bcrypt('123123'),
-            'role' => 'user',
-        ]);
-
-
-        AnonymousDonor::create([
-            'name' => 'Anonymous Donor',
-            'email' => 'anonymous@example',
-            'phone' => '081234567890',
         ]);
     }
 }

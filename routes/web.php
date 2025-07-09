@@ -18,6 +18,7 @@ use App\Http\Controllers\AnnualReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\ArticleCategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\DonationCategoryController;
 use App\Http\Controllers\MetaDataController;

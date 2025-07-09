@@ -10,5 +10,5 @@ class OfficeLocation extends Model  implements HasMedia
 {
     use InteractsWithMedia;
     protected $table = 'office_locations';
-    protected $fillable = ['name', 'address'];
+    protected $fillable = ['name', 'address', 'position', 'map_address'];
 }

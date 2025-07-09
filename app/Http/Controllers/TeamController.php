@@ -16,7 +16,7 @@ class TeamController extends Controller
 
         if ($request->wantsJson()) {
 
-            $teams = Team::latest()->get();
+            $teams = Team::orderBy('position_number', 'ASC')->get();
             return $this->sendSuccess(200, TeamResource::collection($teams), "Teams fetched successfully");
         }
 

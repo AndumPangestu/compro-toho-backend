@@ -19,6 +19,7 @@ class OfficeLocationResource extends JsonResource
             'name' => $this->name,
             'address' => $this->address,
             'image_url' => $this->getFirstMediaUrl('office_locations'),
+            'map_address' => $this->map_address
         ];
     }
 }

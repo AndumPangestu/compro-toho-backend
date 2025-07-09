@@ -30,11 +30,18 @@ use App\Http\Controllers\EmailSubscriberController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\DonationCategoryController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MetaDataController;
 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'userLogin']);
 Route::post('/auth/social/{provider}', [AuthController::class, 'socialLogin']);
+
+
+Route::prefix('contact')->group(function () {
+    Route::post('/', [ContactController::class, 'store'])->name('contact.store');
+});
+
 
 //password reset
 Route::post('/auth/forgot-password', [PasswordController::class, 'sendResetLinkEmail'])->middleware(['throttle:6,1']);
