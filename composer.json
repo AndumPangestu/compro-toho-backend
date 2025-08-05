@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -14,7 +17,6 @@
         "midtrans/midtrans-php": "^2.6",
         "spatie/laravel-medialibrary": "^11.12",
         "tymon/jwt-auth": "^2.1",
-        "unisharp/laravel-filemanager": "^2.10",
         "yajra/laravel-datatables": "^11.0",
         "yajra/laravel-datatables-oracle": "^11.1"
     },
