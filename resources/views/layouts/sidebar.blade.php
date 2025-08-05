@@ -107,8 +107,8 @@
                     href="{{ route('admins.index') }}">Admin</a>
 
                 @if (auth()->user()->role === 'superadmin')
-                <a class="collapse-item {{ request()->routeIs('superadmins.index') ? 'active' : '' }}"
-                    href="{{ route('superadmins.index') }}">Super Admin</a>
+                    <a class="collapse-item {{ request()->routeIs('superadmins.index') ? 'active' : '' }}"
+                        href="{{ route('superadmins.index') }}">Super Admin</a>
                 @endif
             </div>
         </div>
@@ -122,6 +122,13 @@
         <a class="nav-link py-2 " href="{{ route('testimonials.index') }}">
             <i class="fas fa-fw fa-comment-alt"></i>
             <span>Testimonials</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ request()->routeIs('contact.index') ? 'active' : '' }}">
+        <a class="nav-link py-2" href="{{ route('contact.index') }}">
+            <i class="fas fa-fw fa-image"></i>
+            <span>Contact</span>
         </a>
     </li>
 

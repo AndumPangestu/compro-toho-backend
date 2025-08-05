@@ -296,4 +296,14 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::put('/{id}', [SocialMediaController::class, 'update'])->name('social-media.update');
         Route::delete('/{id}', [SocialMediaController::class, 'destroy'])->name('social-media.destroy');
     });
+
+    // contact
+    Route::prefix('contact')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('contact.index');
+        Route::get('/data', [ContactController::class, 'getContacts'])->name('contact.data');
+        Route::delete('/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
+    });
+});
+Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
